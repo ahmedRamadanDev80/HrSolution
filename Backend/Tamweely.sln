@@ -2,13 +2,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.14.36623.8
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tamweely.Domain", "Tamweely.Skeleton.Domain\Tamweely.Domain.csproj", "{05B9F20F-9050-8412-C7D2-315B927E3544}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tamweely.Domain", "Tamweely.Domain\Tamweely.Domain.csproj", "{05B9F20F-9050-8412-C7D2-315B927E3544}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8EC462FD-D22E-90A8-E5CE-7E832BA40C5D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tamweely.Infrastructure", "Tamweely.Skeleton.Infrastructure\Tamweely.Infrastructure.csproj", "{E3A046EA-AFC2-33BF-F1B7-846F0EF3256F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tamweely.Infrastructure", "Tamweely.Infrastructure\Tamweely.Infrastructure.csproj", "{E3A046EA-AFC2-33BF-F1B7-846F0EF3256F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tamweely.Application", "Tamweely.Skeleton.Application\Tamweely.Application.csproj", "{FD325A04-6FD0-3A74-81C1-D78A4F987010}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tamweely.Application", "Tamweely.Application\Tamweely.Application.csproj", "{FD325A04-6FD0-3A74-81C1-D78A4F987010}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tamweely.WebAPI", "Tamweely.WebAPI\Tamweely.WebAPI.csproj", "{CAFD2A7F-10D3-47E1-9C0A-F0BE77A99D39}"
 EndProject
