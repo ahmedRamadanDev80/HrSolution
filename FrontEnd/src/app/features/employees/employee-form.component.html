@@ -1,0 +1,69 @@
+<div class="container mt-4">
+    <h2>{{ id ? 'Edit Employee' : 'Create Employee' }}</h2>
+
+    <form #employeeForm="ngForm" (ngSubmit)="save(employeeForm)">
+        <div class="mb-3">
+            <label class="form-label">First Name</label>
+            <input type="text" class="form-control" required [(ngModel)]="employee.firstName" name="firstName" />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Last Name</label>
+            <input type="text" class="form-control" required [(ngModel)]="employee.lastName" name="lastName" />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Email</label>
+            <input type="email" class="form-control" required [(ngModel)]="employee.email" name="email" />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Mobile</label>
+            <input type="text" class="form-control" required [(ngModel)]="employee.mobile" name="mobile" />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Date of Birth</label>
+            <input type="date" class="form-control" [(ngModel)]="employee.dateOfBirth" name="dateOfBirth" />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Department</label>
+            <select class="form-select" required [(ngModel)]="employee.departmentId" name="departmentId">
+
+                <option [ngValue]="null" disabled>
+                    -- Select Department --
+                </option>
+
+                <option *ngFor="let d of departments()" [ngValue]="d.id">
+                    {{ d.name }}
+                </option>
+            </select>
+        </div>
+
+
+        <div class="mb-3">
+            <label class="form-label">Job Title</label>
+            <select class="form-select" required [(ngModel)]="employee.jobTitleId" name="jobTitleId">
+
+                <option [ngValue]="null" disabled>
+                    -- Select Job Title --
+                </option>
+
+                <option *ngFor="let j of jobTitles()" [ngValue]="j.id">
+                    {{ j.name }}
+                </option>
+            </select>
+        </div>
+
+
+        <div *ngIf="error()" class="alert alert-danger">{{ error() }}</div>
+
+        <button type="submit" class="btn btn-primary me-2">
+            {{ id ? 'Update' : 'Create' }}
+        </button>
+        <button type="button" class="btn btn-secondary" (click)="router.navigate(['/employees'])">
+            Cancel
+        </button>
+    </form>
+</div>

@@ -35,6 +35,17 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
 .AddEntityFrameworkStores<AppDbContext>()
 .AddDefaultTokenProviders();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAngularDev", policy =>
+    {
+        policy.WithOrigins("http://localhost:4200") // Angular dev server
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials(); // optional if you use cookies
+    });
+});
+
 builder.Services.Configure<JwtOptions>(
     builder.Configuration.GetSection("ApiSettings:JwtOptions")
 );
@@ -103,6 +114,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors("AllowAngularDev");
+
 app.UseHttpsRedirection();
 
 app.UseMiddleware<ExceptionMiddleware>();
