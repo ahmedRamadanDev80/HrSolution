@@ -62,25 +62,41 @@ export class EmployeeFormComponent implements OnInit {
     }
 
     save(form: NgForm) {
-        if (form.invalid) {
-            this.error.set('Please fill all required fields.');
-            return;
-        }
-
-        const payload = this.employee;
-
-        if (this.id) {
-            this.employeeService.updateEmployee(this.id, payload).subscribe({
-                next: () => this.router.navigate(['/employees']),
-                error: (err) => this.error.set('Failed to update employee.')
-            });
-        } else {
-            this.employeeService.createEmployee(payload).subscribe({
-                next: () => this.router.navigate(['/employees']),
-                error: (err) => this.error.set('Failed to create employee.')
-            });
-        }
+    if (form.invalid) {
+        this.error.set('Please fill all required fields.');
+        return;
     }
+
+    const payload = this.employee;
+
+    const handleError = (err: any) => {
+        if (err.status === 400 && err.error?.errors) {
+            // Check for email error
+            if (err.error.errors.email && err.error.errors.email.length > 0) {
+                this.error.set(err.error.errors.email[0]);
+                return;
+            }
+            // Fallback: show the first validation error
+            const firstKey = Object.keys(err.error.errors)[0];
+            this.error.set(err.error.errors[firstKey][0]);
+        } else {
+            this.error.set('Unexpected server error.');
+        }
+    };
+
+    if (this.id) {
+        this.employeeService.updateEmployee(this.id, payload).subscribe({
+            next: () => this.router.navigate(['/employees']),
+            error: handleError
+        });
+    } else {
+        this.employeeService.createEmployee(payload).subscribe({
+            next: () => this.router.navigate(['/employees']),
+            error: handleError
+        });
+    }
+}
+
 
     private loadLookups() {
         this.departmentService.getDepartments(false).subscribe(d =>

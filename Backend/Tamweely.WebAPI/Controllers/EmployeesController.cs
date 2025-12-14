@@ -1,8 +1,10 @@
+using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Tamweely.Application.DTOs;
 using Tamweely.Application.Features.Employees;
 using Tamweely.Application.Interfaces;
-using Tamweely.Application.DTOs;
 
 namespace Tamweely.WebAPI.Controllers;
 
@@ -12,7 +14,12 @@ namespace Tamweely.WebAPI.Controllers;
 public class EmployeesController : ControllerBase
 {
     private readonly IEmployeeRepository _repo;
-    public EmployeesController(IEmployeeRepository repo) { _repo = repo; }
+    private readonly IValidator<CreateOrEditEmployeeDto> _validator;
+    public EmployeesController(IEmployeeRepository repo, IValidator<CreateOrEditEmployeeDto> validator)
+    {
+        _repo = repo;
+        _validator = validator;
+    }
 
     [HttpGet]
     public async Task<IActionResult> Get([FromQuery] EmployeeQueryParams q)
@@ -33,16 +40,55 @@ public class EmployeesController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateOrEditEmployeeDto dto)
     {
-        var id = await _repo.CreateAsync(dto);
-        return CreatedAtAction(nameof(GetById), new { id }, null);
+        var validationResult = await _validator.ValidateAsync(dto);
+        if (!validationResult.IsValid)
+        {
+            return BadRequest(new ValidationProblemDetails(
+                validationResult.Errors
+                    .GroupBy(e => e.PropertyName)
+                    .ToDictionary(
+                        g => g.Key,
+                        g => g.Select(e => e.ErrorMessage).ToArray()
+                    )));
+        }
+
+        try
+        {
+            var id = await _repo.CreateAsync(dto);
+            return CreatedAtAction(nameof(GetById), new { id }, null);
+        }
+        catch (DbUpdateException) // Leave unique constraint handling to middleware
+        {
+            throw;
+        }
+
     }
 
     [Authorize(Roles = "Admin,User")]
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(int id, [FromBody] CreateOrEditEmployeeDto dto)
     {
-        await _repo.UpdateAsync(id, dto);
-        return NoContent();
+        var validationResult = await _validator.ValidateAsync(dto);
+        if (!validationResult.IsValid)
+        {
+            return BadRequest(new ValidationProblemDetails(
+                validationResult.Errors
+                    .GroupBy(e => e.PropertyName)
+                    .ToDictionary(
+                        g => g.Key,
+                        g => g.Select(e => e.ErrorMessage).ToArray()
+                    )));
+        }
+
+        try
+        {
+            await _repo.UpdateAsync(id, dto);
+            return NoContent();
+        }
+        catch (DbUpdateException) // Unique email violation handled in middleware
+        {
+            throw;
+        }
     }
 
     [Authorize(Roles = "Admin")]

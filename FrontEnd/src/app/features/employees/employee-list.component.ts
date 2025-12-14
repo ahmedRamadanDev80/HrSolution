@@ -35,8 +35,8 @@ export class EmployeeListComponent implements OnInit {
     // Filters (plain properties for ngModel)
     departmentId: number | null = null;
     jobTitleId: number | null = null;
-    dateFrom: string | null = null;
-    dateTo: string | null = null;
+    DobFrom: string | null = null;
+    DobTo: string | null = null;
 
     // Toggle for advanced filters
     showFilters = signal(false);
@@ -62,8 +62,8 @@ export class EmployeeListComponent implements OnInit {
 
         if (this.departmentId != null) params.departmentId = this.departmentId;
         if (this.jobTitleId != null) params.jobTitleId = this.jobTitleId;
-        if (this.dateFrom) params.dateFrom = this.dateFrom;
-        if (this.dateTo) params.dateTo = this.dateTo;
+        if (this.DobFrom) params.DobFrom = this.DobFrom;
+        if (this.DobTo) params.DobTo = this.DobTo;
 
         return params;
     }
@@ -71,7 +71,7 @@ export class EmployeeListComponent implements OnInit {
     loadEmployees() {
         this.employeeService.getEmployees(this.buildParams())
             .subscribe((res: EmployeePagedResult) => {
-                console.log(res.items);
+                //console.log(res.items);
                 this.employees.set(res.items);
                 this.total.set(res.total);
                 this.page.set(res.page);

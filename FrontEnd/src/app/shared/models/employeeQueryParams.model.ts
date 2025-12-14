@@ -2,8 +2,8 @@ export interface EmployeeQueryParams {
     search?: string;        // search by name, email, or mobile
     departmentId?: number;
     jobTitleId?: number;
-    dateFrom?: string;
-    dateTo?: string;
+    DobFrom?: string;
+    DobTo?: string;
     page?: number;
     pageSize?: number;
     sortField?: string;
