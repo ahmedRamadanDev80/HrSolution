@@ -2,7 +2,7 @@
     <!-- Header -->
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h2>Employee List</h2>
-        <button class="btn btn-success" [routerLink]="['/employees/create']">
+        <button *ngIf="hasRole('Admin')" class="btn btn-success" [routerLink]="['/employees/create']">
             <i class="bi bi-plus-lg"></i> Create New Employee
         </button>
     </div>

@@ -13,6 +13,9 @@ import { EmployeeQueryParams } from '../../shared/models/employeeQueryParams.mod
 import { EmployeePagedResult } from '../../shared/models/employeePagedResult.model';
 import { HttpClient } from '@angular/common/http';
 
+import { AuthService } from '../../core/services/auth.service';
+
+
 @Component({
     selector: 'app-employee-list',
     standalone: true,
@@ -42,12 +45,16 @@ export class EmployeeListComponent implements OnInit {
     showFilters = signal(false);
 
     constructor(private employeeService: EmployeeService, private departmentService: DepartmentService,
-        private jobTitlesService: JobTitlesService, private http: HttpClient) { }
+        private jobTitlesService: JobTitlesService, private authService: AuthService, private http: HttpClient) { }
 
     ngOnInit() {
         this.loadEmployees();
         this.loadLookups();
     }
+
+    get hasRole() {
+    return (rolename: string) => this.authService.hasRole(rolename);
+}
 
     toggleFilters() {
         this.showFilters.set(!this.showFilters());

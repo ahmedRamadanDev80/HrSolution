@@ -19,8 +19,7 @@ export class NavbarComponent implements OnInit {
   ngOnInit() {
   }
 
-  // Computed signal for auth state
-  isAuthenticated = computed(() => this.authService.isAuthenticated());
+  isAuthenticated = this.authService.isAuthenticated;
 
   // Navigation items
   navItems = [
